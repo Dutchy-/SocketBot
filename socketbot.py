@@ -44,7 +44,6 @@ class SocketListener(threading.Thread):
 		while True:
 			sock, addr = self.ssock.accept()
 			ClientHandler(sock, addr).start()
-			print("accepted connection")
 
 def init_sockets(channels):
 	sockets = {}
@@ -83,7 +82,6 @@ server = init_server(network, port, nick, name, channels)
 # Before we start looping, make a signal handler
 def shutdown(signal, frame):
 	server.disconnect()
-	print("Shutdown!")
 	sys.exit(0)
 signal.signal(signal.SIGINT, shutdown)
 # Jump into an infinite loop
