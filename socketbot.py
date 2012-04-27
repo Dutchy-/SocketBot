@@ -8,15 +8,11 @@ import os.path
 import signal
 import sys
 
+import config
+
 # Constants
 socketdir = 'channels'
 
-# Connection information
-network = 'irc.snt.utwente.nl'
-port = 6667
-channels = ['#socketbot', '#iapps']
-nick = 'SocketBot'
-name = 'Dutchy'
 
 # Create an IRC object
 irc = irclib.IRC()
@@ -76,9 +72,9 @@ def init_server(network, port, nick, ircname, channels):
 	return server
 
 # Get channel -> unix socket dict
-sockets = init_sockets(channels)
+sockets = init_sockets(config.channels)
 # Join the server
-server = init_server(network, port, nick, name, channels)
+server = init_server(config.network, config.port, config.nick, config.name, config.channels)
 # Before we start looping, make a signal handler
 def shutdown(signal, frame):
 	server.disconnect()
