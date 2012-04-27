@@ -13,10 +13,6 @@ import config
 # Constants
 socketdir = 'channels'
 
-
-# Create an IRC object
-irc = irclib.IRC()
-
 class ClientHandler(threading.Thread):
 	def __init__(self, sock, addr):
 		super( ClientHandler, self).__init__()
@@ -71,14 +67,16 @@ def init_server(network, port, nick, ircname, channels):
 		server.join(channel)
 	return server
 
-# Get channel -> unix socket dict
-sockets = init_sockets(config.channels)
-# Join the server
-server = init_server(config.network, config.port, config.nick, config.name, config.channels)
-# Before we start looping, make a signal handler
-def shutdown(signal, frame):
-	server.disconnect()
-	sys.exit(0)
-signal.signal(signal.SIGINT, shutdown)
-# Jump into an infinite loop
-irc.process_forever()
+if __name__ == '__main__':
+	irc = irclib.IRC()
+	# Get channel -> unix socket dict
+	sockets = init_sockets(config.channels)
+	# Join the server
+	server = init_server(config.network, config.port, config.nick, config.name, config.channels)
+	# Before we start looping, make a signal handler
+	def shutdown(signal, frame):
+		server.disconnect()
+		sys.exit(0)
+	signal.signal(signal.SIGINT, shutdown)
+	# Jump into an infinite loop
+	irc.process_forever()
